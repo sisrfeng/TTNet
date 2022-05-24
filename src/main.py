@@ -16,12 +16,12 @@ sys.path.append('./')
 
 from data_process.ttnet_dataloader import create_train_val_dataloader, create_test_dataloader
 from models.model_utils import create_model, load_pretrained_model, make_data_parallel, resume_model, get_num_parameters
-from models.model_utils import freeze_model
-from utils.train_utils import create_optimizer, create_lr_scheduler, get_saved_state, save_checkpoint
-from utils.train_utils import reduce_tensor, to_python_float
-from utils.misc import AverageMeter, ProgressMeter
-from utils.logger import Logger
-from config.config import parse_configs
+from models.model_utils   import freeze_model
+from utils.train_utils    import create_optimizer, create_lr_scheduler, get_saved_state, save_checkpoint
+from utils.train_utils    import reduce_tensor, to_python_float
+from utils.misc           import AverageMeter, ProgressMeter
+from utils.logger         import Logger
+from config.config        import parse_configs
 
 
 def main():

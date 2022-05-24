@@ -1,13 +1,4 @@
-"""
 # -*- coding: utf-8 -*-
------------------------------------------------------------------------------------
-# Author: Nguyen Mau Dung
-# DoC: 2020.06.10
-# email: nguyenmaudung93.kstn@gmail.com
-# project repo: https://github.com/maudzung/TTNet-Realtime-for-Table-Tennis-Pytorch
------------------------------------------------------------------------------------
-# Description: This script for demonstration
-"""
 
 import os
 import sys

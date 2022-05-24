@@ -16,14 +16,17 @@ If you want to extract all images from videos, let's execute:
 python extract_all_images.py
 ```
 
-As the authors mentioned in the original paper, images are extracted based on frames that has events. 
-To extract frames based on the key annotated events, let's execute:
+As the authors mentioned in the original paper,
+    images are extracted based on frames that has events.
+    To extract frames based on the key annotated events,
+    let's execute:
 
 ```shell script
 python extract_selected_images.py
 ```
 
-**I highly recommend** to run the below command to extract frames that will use for the purpose of smooth labeling events (mentioned in the 5.1 part of the paper).
+**I highly recommend** to run the below command to extract frames that will use for the purpose of
+smooth labeling events (mentioned in the 5.1 part of the paper).
 
  ```shell script
 python extract_smooth_labellings.py

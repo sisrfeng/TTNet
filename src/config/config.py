@@ -1,20 +1,10 @@
-"""
-# -*- coding: utf-8 -*-
------------------------------------------------------------------------------------
-# Author: Nguyen Mau Dung
-# DoC: 2020.05.21
-# email: nguyenmaudung93.kstn@gmail.com
-# project repo: https://github.com/maudzung/TTNet-Realtime-for-Table-Tennis-Pytorch
------------------------------------------------------------------------------------
-# Description: The configurations of the project will be defined here
-"""
-
 import torch
 import os
 import datetime
 import argparse
 from easydict import EasyDict as edict
 import sys
+
 
 sys.path.append('../')
 
@@ -23,6 +13,7 @@ from utils.misc import make_folder
 
 def parse_configs():
     parser = argparse.ArgumentParser(description='TTNet Implementation')
+
     parser.add_argument('--seed', type=int, default=2020,
                         help='re-produce the results with seed random')
     parser.add_argument('--saved_fn', type=str, default='ttnet', metavar='FN',
@@ -30,7 +21,7 @@ def parse_configs():
     ####################################################################
     ##############     Model configs            ###################
     ####################################################################
-    parser.add_argument('-a', '--arch', type=str, default='ttnet', metavar='ARCH',
+    parser.add_argument('-a', '--arch',  default='ttnet', metavar='ARCH',
                         help='The name of the model architecture')
     parser.add_argument('--dropout_p', type=float, default=0.5, metavar='P',
                         help='The dropout probability of the model')
@@ -43,7 +34,7 @@ def parse_configs():
                         help='If true, no event spotting detection.')
     parser.add_argument('--no_seg', action='store_true',
                         help='If true, no segmentation module.')
-    parser.add_argument('--pretrained_path', type=str, default=None, metavar='PATH',
+    parser.add_argument('--pretrained_path',  default=None, metavar='PATH',
                         help='the path of the pretrained checkpoint')
     parser.add_argument('--overwrite_global_2_local', action='store_true',
                         help='If true, the weights of the local stage will be overwritten by the global stage.')
@@ -51,7 +42,8 @@ def parse_configs():
     ####################################################################
     ##############     Dataloader and Running configs            #######
     ####################################################################
-    parser.add_argument('--working-dir', type=str, default='../../', metavar='PATH',
+    #  parser.add_argument('--working-dir',  default='../../', metavar='PATH',
+    parser.add_argument('--working-dir',  default='/data2/wf2/ttNet/', metavar='PATH',
                         help='the ROOT working directory')
     parser.add_argument('--no-val', action='store_true',
                         help='If true, use all data for training, no validation set')
@@ -93,9 +85,9 @@ def parse_configs():
                         help='momentum')
     parser.add_argument('-wd', '--weight_decay', type=float, default=0., metavar='WD',
                         help='weight decay (default: 1e-6)')
-    parser.add_argument('--optimizer_type', type=str, default='adam', metavar='OPTIMIZER',
+    parser.add_argument('--optimizer_type',  default='adam', metavar='OPTIMIZER',
                         help='the type of optimizer, it can be sgd or adam')
-    parser.add_argument('--lr_type', type=str, default='plateau', metavar='SCHEDULER',
+    parser.add_argument('--lr_type',  default='plateau', metavar='SCHEDULER',
                         help='the type of the learning rate scheduler (steplr or ReduceonPlateau)')
     parser.add_argument('--lr_factor', type=float, default=0.5, metavar='FACTOR',
                         help='reduce the learning rate with this factor')
@@ -131,29 +123,26 @@ def parse_configs():
     ####################################################################
     ##############     Distributed Data Parallel            ############
     ####################################################################
+    parser.add_argument('--multiprocessing-distributed', action='store_true',
+                        help='launch N processes per node, which has N GPUs.')
     parser.add_argument('--world-size', default=-1, type=int, metavar='N',
                         help='number of nodes for distributed training')
     parser.add_argument('--rank', default=-1, type=int, metavar='N',
                         help='node rank for distributed training')
-    parser.add_argument('--dist-url', default='tcp://127.0.0.1:29500', type=str,
-                        help='url used to set up distributed training')
-    parser.add_argument('--dist-backend', default='nccl', type=str,
-                        help='distributed backend')
-    parser.add_argument('--gpu_idx', default=None, type=int,
-                        help='GPU index to use.')
+
+    parser.add_argument('--dist-url', default='tcp://127.0.0.1:29504')
+    parser.add_argument('--dist-backend', default='nccl', type=str)
+
+    parser.add_argument('--gpu_idx', default=None, type=int)
     parser.add_argument('--no_cuda', action='store_true',
                         help='If true, cuda is not used.')
-    parser.add_argument('--multiprocessing-distributed', action='store_true',
-                        help='Use multi-processing distributed training to launch '
-                             'N processes per node, which has N GPUs. This is the '
-                             'fastest way to use PyTorch for either single node or '
-                             'multi node data parallel training')
+
     ####################################################################
     ##############     Evaluation configurations     ###################
     ####################################################################
     parser.add_argument('--evaluate', action='store_true',
                         help='only evaluate the model, not training')
-    parser.add_argument('--resume_path', type=str, default=None, metavar='PATH',
+    parser.add_argument('--resume_path',  default=None, metavar='PATH',
                         help='the path of the resumed checkpoint')
     parser.add_argument('--use_best_checkpoint', action='store_true',
                         help='If true, choose the best model on val set, otherwise choose the last model')
@@ -167,9 +156,9 @@ def parse_configs():
     ####################################################################
     ##############     Demonstration configurations     ###################
     ####################################################################
-    parser.add_argument('--video_path', type=str, default=None, metavar='PATH',
+    parser.add_argument('--video_path',  default=None, metavar='PATH',
                         help='the path of the video that needs to demo')
-    parser.add_argument('--output_format', type=str, default='text', metavar='PATH',
+    parser.add_argument('--output_format',  default='text', metavar='PATH',
                         help='the type of the demo output')
     parser.add_argument('--show_image', action='store_true',
                         help='If true, show the image during demostration')
@@ -190,8 +179,8 @@ def parse_configs():
     ##############     Data configs            ###################
     ####################################################################
     configs.dataset_dir = os.path.join(configs.working_dir, 'dataset')
-    configs.train_game_list = ['game_1', 'game_2', 'game_3', 'game_4', 'game_5']
-    configs.test_game_list = ['test_1', 'test_2', 'test_3', 'test_4', 'test_5', 'test_6', 'test_7']
+    configs.train_game_list =  ['game_1', 'game_2', 'game_3', 'game_4', 'game_5']
+    configs.test_game_list  =  ['test_1', 'test_2', 'test_3', 'test_4', 'test_5', 'test_6', 'test_7']
     configs.events_dict = {
         'bounce': 0,
         'net': 1,
@@ -271,7 +260,8 @@ def parse_configs():
 
 if __name__ == "__main__":
     configs = parse_configs()
-    print(configs)
+    for k,v in configs.items():
+        print(k, ':', v)
 
     print(datetime.date.today())
     print(datetime.datetime.now().year)
